@@ -36,6 +36,22 @@ import html2canvas from "html2canvas";
 import domtoimage from "dom-to-image";
 import * as htmlToImage from "html-to-image";
 
+// Font Awesome SVG icons mapping
+const createFontAwesomeSVG = (iconName, isBrand = false) => {
+  const iconMap = {
+    phone: `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>`,
+    envelope: `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>`,
+    "share-nodes": `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M448 80c0-26.5-21.5-48-48-48H112C85.5 32 64 53.5 64 80v48h16V80c0-8.8 7.2-16 16-16h288c8.8 0 16 7.2 16 16v288c0 8.8-7.2 16-16 16H96c-8.8 0-16-7.2-16-16v-48H64v48c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V80zM64 160c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32v32c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160zm0 96c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32v32c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32v-32zm0 96c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32v32c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32v-32z"/></svg>`,
+    check: `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>`,
+    star: `<svg viewBox="0 0 576 512" width="1em" height="1em" fill="currentColor"><path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>`,
+    "check-circle": `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>`,
+    download: `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H64zm32 160c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z"/></svg>`,
+    globe: `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M57.7 193l9.4 16.4c8.3 14.5 21.9 25.2 38.8 28.8l163.2 38.7c3.8 .9 7.7 1.3 11.7 1.3c4.1 0 8.2-.4 12-1.3L520.6 193c17-3.5 30.5-14.2 38.8-28.8l9.4-16.4c8.6-15.1 8.6-33.7 0-48.8l-9.4-16.4c-8.3-14.5-21.9-25.2-38.8-28.8L334.6 1.2c-3.8-.9-7.7-1.3-11.7-1.3c-4.1 0-8.2 .4-12 1.3L148.9 33.6c-17 3.5-30.5 14.2-38.8 28.8l-9.4 16.4c-8.6 15.1-8.6 33.7 0 48.8zM256 224c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zm-96 96c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32s-14.3-32-32-32H192c-17.7 0-32 14.3-32 32z"/></svg>`,
+  };
+
+  return iconMap[iconName] || null;
+};
+
 export default function Home() {
   const [htmlContent, setHtmlContent] = useState("");
   const [isConverting, setIsConverting] = useState(false);
@@ -43,7 +59,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const toast = useToast();
   const previewRef = useRef(null);
-  const iframeRef = useRef(null);
+  const hiddenPreviewRef = useRef(null);
 
   // Update preview content when HTML changes
   useEffect(() => {
@@ -51,52 +67,69 @@ export default function Home() {
       const iframe = iframeRef.current;
       const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
-      // Create a complete HTML document with proper head section
-      const fullHtml = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-          <link rel="preconnect" href="https://fonts.googleapis.com">
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous">
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous">
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" crossorigin="anonymous">
-          <style>
-            body {
-              margin: 0;
-              padding: 0;
-              font-family: Arial, sans-serif;
-            }
-            
-            /* Ensure Font Awesome icons are properly loaded */
-            .fa, .fas, .far, .fab, .fal, .fad {
-              font-family: "Font Awesome 6 Free", "Font Awesome 5 Free", "Font Awesome 6 Pro", "Font Awesome 5 Pro" !important;
-              font-weight: 900 !important;
-              font-style: normal !important;
-              font-variant: normal !important;
-              text-rendering: auto !important;
-              line-height: 1 !important;
-              -webkit-font-smoothing: antialiased !important;
-              -moz-osx-font-smoothing: grayscale !important;
-            }
-            
-            .far {
-              font-weight: 400 !important;
-            }
-            
-            .fab {
-              font-family: "Font Awesome 6 Brands", "Font Awesome 5 Brands" !important;
-              font-weight: 400 !important;
-            }
-          </style>
-        </head>
-        <body>
-          ${htmlContent}
-        </body>
-        </html>
-      `;
+      // Check if the HTML content is a complete document
+      const isCompleteDocument = htmlContent
+        .trim()
+        .toLowerCase()
+        .startsWith("<!doctype html>");
+
+      let fullHtml;
+      if (isCompleteDocument) {
+        // Use the HTML as-is since it's already a complete document
+        fullHtml = htmlContent;
+      } else {
+        // Create a complete HTML document with proper head section
+        fullHtml = `
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" crossorigin="anonymous">
+            <style>
+              body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+              }
+              
+              /* Ensure Font Awesome icons are properly loaded */
+              .fa, .fas, .far, .fab, .fal, .fad, .fa-solid, .fa-regular, .fa-light, .fa-thin, .fa-duotone {
+                font-family: "Font Awesome 7 Free", "Font Awesome 6 Free", "Font Awesome 5 Free", "Font Awesome 7 Pro", "Font Awesome 6 Pro", "Font Awesome 5 Pro" !important;
+                font-weight: 900 !important;
+                font-style: normal !important;
+                font-variant: normal !important;
+                text-rendering: auto !important;
+                line-height: 1 !important;
+                -webkit-font-smoothing: antialiased !important;
+                -moz-osx-font-smoothing: grayscale !important;
+              }
+              
+              .far, .fa-regular {
+                font-weight: 400 !important;
+              }
+              
+              .fab, .fa-brands {
+                font-family: "Font Awesome 7 Brands", "Font Awesome 6 Brands", "Font Awesome 5 Brands" !important;
+                font-weight: 400 !important;
+              }
+              
+              .fa-light, .fa-thin {
+                font-weight: 300 !important;
+              }
+            </style>
+          </head>
+          <body>
+            ${htmlContent}
+          </body>
+          </html>
+        `;
+      }
 
       iframeDoc.open();
       iframeDoc.write(fullHtml);
@@ -126,61 +159,6 @@ export default function Home() {
         throw new Error("Please enter HTML content first");
       }
 
-      // Use Puppeteer API for perfect rendering (including Font Awesome)
-      const response = await fetch("/api/convert-to-png", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          htmlContent,
-          options: {
-            scale: 2,
-          },
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.details || errorData.error || "Conversion failed"
-        );
-      }
-
-      const data = await response.json();
-      setConvertedImageUrl(data.dataUrl);
-
-      toast({
-        title: "Success!",
-        description: "HTML converted to PNG successfully with Puppeteer!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-    } catch (err) {
-      setError(err.message);
-      toast({
-        title: "Error",
-        description: "Failed to capture preview. Please try again.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    } finally {
-      setIsConverting(false);
-    }
-  };
-
-  const handleConvertToPngClient = async () => {
-    setIsConverting(true);
-    setError("");
-    setConvertedImageUrl("");
-
-    try {
-      if (!htmlContent) {
-        throw new Error("Please enter HTML content first");
-      }
-
       // Try using the iframe content first (this should work better)
       if (previewRef.current && iframeRef.current) {
         try {
@@ -191,12 +169,15 @@ export default function Home() {
 
           if (iframeDoc && iframeDoc.body) {
             // Wait for fonts to load properly
-            await new Promise((resolve) => setTimeout(resolve, 2000));
+            await new Promise((resolve) => setTimeout(resolve, 3000));
 
             // Force font loading
             if (iframeDoc.fonts && iframeDoc.fonts.ready) {
               await iframeDoc.fonts.ready;
             }
+
+            // Additional wait for Font Awesome 7 to load
+            await new Promise((resolve) => setTimeout(resolve, 1000));
 
             // Wait for all images to load
             const images = iframeDoc.querySelectorAll("img");
@@ -217,7 +198,8 @@ export default function Home() {
             let dataUrl;
 
             try {
-              // Method 1: Try with font embedding
+              // Method 1: Try with font embedding and longer wait
+              await new Promise((resolve) => setTimeout(resolve, 2000));
               dataUrl = await htmlToImage.toPng(iframeDoc.body, {
                 quality: 1.0,
                 pixelRatio: 2,
@@ -235,6 +217,9 @@ export default function Home() {
                 allowTaint: true,
                 fontEmbedCSS: true,
                 includeQueryParams: true,
+                // Force font loading
+                cacheBust: true,
+                skipFonts: false,
               });
             } catch (firstError) {
               console.log(
@@ -242,17 +227,65 @@ export default function Home() {
                 firstError
               );
 
-              // Method 2: Try without font embedding but with longer wait
-              await new Promise((resolve) => setTimeout(resolve, 1000));
-              dataUrl = await htmlToImage.toPng(iframeDoc.body, {
-                quality: 1.0,
-                pixelRatio: 2,
-                backgroundColor: null,
-                width: iframeDoc.body.scrollWidth || 400,
-                height: iframeDoc.body.scrollHeight || 300,
-                useCORS: true,
-                allowTaint: true,
-              });
+              // Method 2: Try converting Font Awesome icons to SVG first
+              try {
+                // Convert Font Awesome icons to SVG
+                const iconElements = iframeDoc.querySelectorAll(
+                  ".fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands"
+                );
+                console.log("Found icon elements:", iconElements.length);
+                for (const icon of iconElements) {
+                  const iconName = icon.className.match(/fa-([a-zA-Z0-9-]+)/);
+                  console.log(
+                    "Processing icon:",
+                    icon.className,
+                    "extracted name:",
+                    iconName?.[1]
+                  );
+                  if (iconName) {
+                    const svgIcon = createFontAwesomeSVG(
+                      iconName[1],
+                      icon.className.includes("fa-brands") ||
+                        icon.className.includes("fab")
+                    );
+                    if (svgIcon) {
+                      console.log("Replacing with SVG for:", iconName[1]);
+                      icon.innerHTML = svgIcon;
+                      icon.style.fontFamily = "inherit";
+                      icon.style.display = "inline-block";
+                    }
+                  }
+                }
+
+                // Wait a bit for SVG rendering
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+
+                dataUrl = await htmlToImage.toPng(iframeDoc.body, {
+                  quality: 1.0,
+                  pixelRatio: 2,
+                  backgroundColor: null,
+                  width: iframeDoc.body.scrollWidth || 400,
+                  height: iframeDoc.body.scrollHeight || 300,
+                  useCORS: true,
+                  allowTaint: true,
+                });
+              } catch (svgError) {
+                console.log(
+                  "SVG conversion failed, trying basic method:",
+                  svgError
+                );
+
+                // Method 3: Basic conversion without font embedding
+                dataUrl = await htmlToImage.toPng(iframeDoc.body, {
+                  quality: 1.0,
+                  pixelRatio: 2,
+                  backgroundColor: null,
+                  width: iframeDoc.body.scrollWidth || 400,
+                  height: iframeDoc.body.scrollHeight || 300,
+                  useCORS: true,
+                  allowTaint: true,
+                });
+              }
             }
 
             setConvertedImageUrl(dataUrl);
@@ -369,41 +402,21 @@ export default function Home() {
   };
 
   const handleDownloadPng = async () => {
-    setIsConverting(true);
-    setError("");
+    if (!convertedImageUrl) {
+      toast({
+        title: "No Image",
+        description: "Please convert HTML to PNG first",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
 
     try {
-      if (!htmlContent) {
-        throw new Error("Please enter HTML content first");
-      }
-
-      // Use Puppeteer API for perfect rendering (including Font Awesome)
-      const response = await fetch("/api/convert-to-png", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          htmlContent,
-          options: {
-            scale: 2,
-          },
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.details || errorData.error || "Conversion failed"
-        );
-      }
-
-      const data = await response.json();
-      const dataUrl = data.dataUrl;
-
-      // Create download link from data URL
+      // Create download link from the converted image URL
       const link = document.createElement("a");
-      link.href = dataUrl;
+      link.href = convertedImageUrl;
       link.download = "converted-html.png";
       document.body.appendChild(link);
       link.click();
@@ -417,7 +430,7 @@ export default function Home() {
         isClosable: true,
       });
     } catch (err) {
-      setError(err.message);
+      console.error("Download error:", err);
       toast({
         title: "Error",
         description: "Failed to download PNG file.",
@@ -425,8 +438,6 @@ export default function Home() {
         duration: 5000,
         isClosable: true,
       });
-    } finally {
-      setIsConverting(false);
     }
   };
 
@@ -441,6 +452,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
         {/* Icon Fonts */}
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+          crossOrigin="anonymous"
+        />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -626,62 +642,33 @@ export default function Home() {
                     />
 
                     <VStack spacing={3}>
-                      <HStack spacing={4} w="100%">
-                        <Button
-                          bg="transparent"
-                          color="#00ffff"
-                          onClick={handleConvertToPng}
-                          isLoading={isConverting}
-                          loadingText="Processing..."
-                          flex="1"
-                          h="45px"
-                          border="1px solid"
-                          borderColor="rgba(0, 255, 255, 0.5)"
-                          borderRadius="0"
-                          fontWeight="300"
-                          fontSize="sm"
-                          letterSpacing="wider"
-                          textTransform="uppercase"
-                          boxShadow="0 0 15px rgba(0, 255, 255, 0.2)"
-                          _hover={{
-                            bg: "rgba(0, 255, 255, 0.1)",
-                            boxShadow: "0 0 25px rgba(0, 255, 255, 0.4)",
-                          }}
-                          _active={{
-                            bg: "rgba(0, 255, 255, 0.2)",
-                          }}
-                          transition="all 0.3s ease"
-                        >
-                          Server Convert
-                        </Button>
-                        <Button
-                          bg="transparent"
-                          color="#ff00ff"
-                          onClick={handleConvertToPngClient}
-                          isLoading={isConverting}
-                          loadingText="Processing..."
-                          flex="1"
-                          h="45px"
-                          border="1px solid"
-                          borderColor="rgba(255, 0, 255, 0.5)"
-                          borderRadius="0"
-                          fontWeight="300"
-                          fontSize="sm"
-                          letterSpacing="wider"
-                          textTransform="uppercase"
-                          boxShadow="0 0 15px rgba(255, 0, 255, 0.2)"
-                          _hover={{
-                            bg: "rgba(255, 0, 255, 0.1)",
-                            boxShadow: "0 0 25px rgba(255, 0, 255, 0.4)",
-                          }}
-                          _active={{
-                            bg: "rgba(255, 0, 255, 0.2)",
-                          }}
-                          transition="all 0.3s ease"
-                        >
-                          Client Convert
-                        </Button>
-                      </HStack>
+                      <Button
+                        bg="transparent"
+                        color="#00ffff"
+                        onClick={handleConvertToPng}
+                        isLoading={isConverting}
+                        loadingText="Processing..."
+                        w="100%"
+                        h="45px"
+                        border="1px solid"
+                        borderColor="rgba(0, 255, 255, 0.5)"
+                        borderRadius="0"
+                        fontWeight="300"
+                        fontSize="sm"
+                        letterSpacing="wider"
+                        textTransform="uppercase"
+                        boxShadow="0 0 15px rgba(0, 255, 255, 0.2)"
+                        _hover={{
+                          bg: "rgba(0, 255, 255, 0.1)",
+                          boxShadow: "0 0 25px rgba(0, 255, 255, 0.4)",
+                        }}
+                        _active={{
+                          bg: "rgba(0, 255, 255, 0.2)",
+                        }}
+                        transition="all 0.3s ease"
+                      >
+                        Convert to PNG
+                      </Button>
                       <Button
                         bg="transparent"
                         color="#00ff88"
@@ -969,7 +956,7 @@ export default function Home() {
                     _hover={{ boxShadow: "0 0 30px rgba(255, 0, 110, 0.6)" }}
                     transition="all 0.3s ease"
                   >
-                    ⚡ Dual Mode
+                    ⚡ Client-Side Only
                   </Badge>
                   <Badge
                     bg="linear-gradient(45deg, #8338ec, #3a86ff)"
@@ -995,7 +982,7 @@ export default function Home() {
                     _hover={{ boxShadow: "0 0 30px rgba(58, 134, 255, 0.6)" }}
                     transition="all 0.3s ease"
                   >
-                    🚀 Server-side Puppeteer
+                    🚀 html-to-image
                   </Badge>
                   <Badge
                     bg="linear-gradient(45deg, #ff6b6b, #ff8e8e)"

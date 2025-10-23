@@ -19,6 +19,7 @@ import PNGImageModal from "../components/PNGImageModal";
 
 // Import utilities
 import { convertHTMLToPNG, downloadPNG } from "../utils/htmlConversion";
+import { createFontAwesomeSVG } from "../components/FontAwesomeIcons";
 
 export default function Home() {
   const [htmlContent, setHtmlContent] = useState("");
@@ -124,39 +125,65 @@ export default function Home() {
       iframeDoc.open();
       iframeDoc.write(fullHtml);
       iframeDoc.close();
-      
+
       // Debug: Log iframe content
-      console.log('Iframe HTML written:', fullHtml.substring(0, 500) + '...');
-      
+      console.log("Iframe HTML written:", fullHtml.substring(0, 500) + "...");
+
       // Wait for iframe to load and then convert Font Awesome icons to SVG
       setTimeout(() => {
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        const fontAwesomeLinks = iframeDoc.querySelectorAll('link[href*="font-awesome"]');
-        console.log('Font Awesome links in iframe:', fontAwesomeLinks.length);
-        
-        // Import the SVG conversion function
-        import('../components/FontAwesomeIcons').then(({ createFontAwesomeSVG }) => {
-          // Convert all Font Awesome icons to SVG immediately
-          const iconElements = iframeDoc.querySelectorAll(
-            ".fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands"
+        const iframeDoc =
+          iframe.contentDocument || iframe.contentWindow.document;
+        const fontAwesomeLinks = iframeDoc.querySelectorAll(
+          'link[href*="font-awesome"]'
+        );
+        console.log("Font Awesome links in iframe:", fontAwesomeLinks.length);
+
+        // Convert all Font Awesome icons to SVG immediately
+        const iconElements = iframeDoc.querySelectorAll(
+          ".fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands"
+        );
+        console.log("Converting icons to SVG in preview:", iconElements.length);
+
+        iconElements.forEach((icon) => {
+          // Extract the actual icon name, not the style class
+          const iconNameMatch =
+            icon.className.match(
+              /fa-(?:solid|regular|light|thin|duotone|brands)\s+fa-([a-zA-Z0-9-]+)/
+            ) || icon.className.match(/fa-([a-zA-Z0-9-]+)(?:\s|$)/);
+          const iconName = iconNameMatch?.[1];
+          console.log(
+            "Processing icon:",
+            icon.className,
+            "extracted name:",
+            iconName
           );
-          console.log('Converting icons to SVG in preview:', iconElements.length);
-          
-          iconElements.forEach((icon) => {
-            const iconName = icon.className.match(/fa-([a-zA-Z0-9-]+)/);
-            if (iconName) {
-              const svgIcon = createFontAwesomeSVG(
-                iconName[1],
-                icon.className.includes("fa-brands") || icon.className.includes("fab")
-              );
-              if (svgIcon) {
-                console.log('Preview: Converting icon to SVG:', iconName[1]);
-                icon.innerHTML = svgIcon;
-                icon.style.fontFamily = "inherit";
-                icon.style.display = "inline-block";
-              }
+          if (iconName) {
+            const svgIcon = createFontAwesomeSVG(
+              iconName,
+              icon.className.includes("fa-brands") ||
+                icon.className.includes("fab")
+            );
+            console.log(
+              "SVG result for",
+              iconName,
+              ":",
+              svgIcon ? "SUCCESS" : "FAILED"
+            );
+            if (svgIcon) {
+              console.log("Preview: Converting icon to SVG:", iconName);
+              // Clear any pseudo-element content by removing Font Awesome classes
+              icon.className = icon.className.replace(/fa-[a-z-]+/g, "").trim();
+              icon.innerHTML = svgIcon;
+              icon.style.fontFamily = "inherit";
+              icon.style.display = "inline-block";
+              icon.style.fontSize = "inherit";
+              icon.style.width = "1em";
+              icon.style.height = "1em";
+              console.log("Icon after conversion:", icon.innerHTML);
+            } else {
+              console.log("No SVG found for icon:", iconName);
             }
-          });
+          }
         });
       }, 2000);
     }
@@ -191,7 +218,7 @@ export default function Home() {
       }
 
       const dataUrl = await convertHTMLToPNG(
-          htmlContent,
+        htmlContent,
         previewRef,
         iframeRef
       );

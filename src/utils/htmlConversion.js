@@ -121,18 +121,30 @@ export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
           const originalIconContent = new Map();
           for (const icon of iconElements) {
             originalIconContent.set(icon, icon.innerHTML);
-            const iconName = icon.className.match(/fa-([a-zA-Z0-9-]+)/);
+            // Extract the actual icon name, not the style class
+            const iconNameMatch =
+              icon.className.match(
+                /fa-(?:solid|regular|light|thin|duotone|brands)\s+fa-([a-zA-Z0-9-]+)/
+              ) || icon.className.match(/fa-([a-zA-Z0-9-]+)(?:\s|$)/);
+            const iconName = iconNameMatch?.[1];
             if (iconName) {
               const svgIcon = createFontAwesomeSVG(
-                iconName[1],
+                iconName,
                 icon.className.includes("fa-brands") ||
                   icon.className.includes("fab")
               );
               if (svgIcon) {
-                console.log("Pre-converting icon to SVG:", iconName[1]);
+                console.log("Pre-converting icon to SVG:", iconName);
+                // Clear any pseudo-element content by removing Font Awesome classes
+                icon.className = icon.className
+                  .replace(/fa-[a-z-]+/g, "")
+                  .trim();
                 icon.innerHTML = svgIcon;
                 icon.style.fontFamily = "inherit";
                 icon.style.display = "inline-block";
+                icon.style.fontSize = "inherit";
+                icon.style.width = "1em";
+                icon.style.height = "1em";
               }
             }
           }
@@ -172,26 +184,38 @@ export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
             );
             console.log("Found icon elements:", iconElements.length);
             for (const icon of iconElements) {
-              const iconName = icon.className.match(/fa-([a-zA-Z0-9-]+)/);
+              // Extract the actual icon name, not the style class
+              const iconNameMatch =
+                icon.className.match(
+                  /fa-(?:solid|regular|light|thin|duotone|brands)\s+fa-([a-zA-Z0-9-]+)/
+                ) || icon.className.match(/fa-([a-zA-Z0-9-]+)(?:\s|$)/);
+              const iconName = iconNameMatch?.[1];
               console.log(
                 "Processing icon:",
                 icon.className,
                 "extracted name:",
-                iconName?.[1]
+                iconName
               );
               if (iconName) {
                 const svgIcon = createFontAwesomeSVG(
-                  iconName[1],
+                  iconName,
                   icon.className.includes("fa-brands") ||
                     icon.className.includes("fab")
                 );
                 if (svgIcon) {
-                  console.log("Replacing with SVG for:", iconName[1]);
+                  console.log("Replacing with SVG for:", iconName);
+                  // Clear any pseudo-element content by removing Font Awesome classes
+                  icon.className = icon.className
+                    .replace(/fa-[a-z-]+/g, "")
+                    .trim();
                   icon.innerHTML = svgIcon;
                   icon.style.fontFamily = "inherit";
                   icon.style.display = "inline-block";
+                  icon.style.fontSize = "inherit";
+                  icon.style.width = "1em";
+                  icon.style.height = "1em";
                 } else {
-                  console.log("No SVG found for:", iconName[1]);
+                  console.log("No SVG found for:", iconName);
                 }
               }
             }

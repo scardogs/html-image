@@ -1,4 +1,29 @@
-// Font Awesome SVG icons mapping
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faPhone,
+  faEnvelope,
+  faShareNodes,
+  faCheck,
+  faStar,
+  faCheckCircle,
+  faDownload,
+  faGlobe,
+} from "@fortawesome/free-solid-svg-icons";
+import { icon } from "@fortawesome/fontawesome-svg-core";
+
+// Add icons to the library
+library.add(
+  faPhone,
+  faEnvelope,
+  faShareNodes,
+  faCheck,
+  faStar,
+  faCheckCircle,
+  faDownload,
+  faGlobe
+);
+
+// Font Awesome SVG icons mapping using official package
 export const createFontAwesomeSVG = (iconName, isBrand = false) => {
   console.log(
     "createFontAwesomeSVG called with:",
@@ -8,22 +33,29 @@ export const createFontAwesomeSVG = (iconName, isBrand = false) => {
   );
 
   const iconMap = {
-    phone: `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>`,
-    envelope: `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>`,
-    "share-nodes": `<svg viewBox="0 0 448 512" width="1em" height="1em" fill="currentColor"><path d="M352 224c53 0 96-43 96-96s-43-96-96-96s-96 43-96 96c0 4 .2 8 .7 11.9l-94.1 47C145.4 170.2 121.9 160 96 160c-53 0-96 43-96 96s43 96 96 96c25.9 0 49.4-10.2 66.6-26.9l94.1 47c-.5 3.9-.7 7.8-.7 11.9c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-25.9 0-49.4 10.2-66.6 26.9l-94.1-47c.5-3.9 .7-7.8 .7-11.9s-.2-8-.7-11.9l94.1-47C302.6 213.8 326.1 224 352 224z"/></svg>`,
-    check: `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>`,
-    star: `<svg viewBox="0 0 576 512" width="1em" height="1em" fill="currentColor"><path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>`,
-    "check-circle": `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>`,
-    download: `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H64zm32 160c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z"/></svg>`,
-    globe: `<svg viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor"><path d="M57.7 193l9.4 16.4c8.3 14.5 21.9 25.2 38.8 28.8l163.2 38.7c3.8 .9 7.7 1.3 11.7 1.3c4.1 0 8.2-.4 12-1.3L520.6 193c17-3.5 30.5-14.2 38.8-28.8l9.4-16.4c8.6-15.1 8.6-33.7 0-48.8l-9.4-16.4c-8.3-14.5-21.9-25.2-38.8-28.8L334.6 1.2c-3.8-.9-7.7-1.3-11.7-1.3c-4.1 0-8.2 .4-12 1.3L148.9 33.6c-17 3.5-30.5 14.2-38.8 28.8l-9.4 16.4c-8.6 15.1-8.6 33.7 0 48.8zM256 224c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zm-96 96c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32s-14.3-32-32-32H192c-17.7 0-32 14.3-32 32z"/></svg>`,
+    phone: faPhone,
+    envelope: faEnvelope,
+    "share-nodes": faShareNodes,
+    check: faCheck,
+    star: faStar,
+    "check-circle": faCheckCircle,
+    download: faDownload,
+    globe: faGlobe,
   };
 
-  const result = iconMap[iconName] || null;
-  console.log(
-    "createFontAwesomeSVG result for",
-    iconName,
-    ":",
-    result ? "SUCCESS" : "FAILED"
-  );
-  return result;
+  const iconDefinition = iconMap[iconName];
+  if (!iconDefinition) {
+    console.log(
+      "createFontAwesomeSVG result for",
+      iconName,
+      ": FAILED - Icon not found"
+    );
+    return null;
+  }
+
+  // Generate SVG string from Font Awesome icon
+  const svgString = icon(iconDefinition).html[0];
+  console.log("createFontAwesomeSVG result for", iconName, ": SUCCESS");
+
+  return svgString;
 };

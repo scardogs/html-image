@@ -27,6 +27,7 @@ export default function HTMLInputSection({
   handleDownloadPng,
   isConverting,
   error,
+  convertedImageUrl,
 }) {
   const [useCustomSize, setUseCustomSize] = useState(false);
   const [customWidth, setCustomWidth] = useState(1080);
@@ -41,7 +42,7 @@ export default function HTMLInputSection({
   return (
     <Card
       flex="1"
-      minH="600px"
+      minH={{ base: "500px", md: "600px" }}
       bg="var(--surface)"
       border="1px solid"
       borderColor="var(--border)"
@@ -52,6 +53,7 @@ export default function HTMLInputSection({
         boxShadow: "0 4px 12px rgba(0, 102, 255, 0.08)",
       }}
       transition="all 0.2s ease"
+      mb={{ base: 6, lg: 0 }}
     >
       <CardHeader pb={4}>
         <Text
@@ -83,9 +85,9 @@ export default function HTMLInputSection({
     <i class="fas fa-globe"></i> Website: example.com
   </div>
 </div>`}
-            minH="400px"
+            minH={{ base: "300px", md: "400px" }}
             fontFamily="'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace"
-            fontSize="sm"
+            fontSize={{ base: "xs", md: "sm" }}
             bg="var(--background)"
             border="1px solid"
             borderColor="var(--border)"
@@ -99,6 +101,38 @@ export default function HTMLInputSection({
             }}
             resize="vertical"
           />
+
+          {/* Conversion Status Indicator */}
+          {convertedImageUrl && htmlContent.trim() && (
+            <Box
+              bg="rgba(0, 170, 68, 0.1)"
+              border="1px solid"
+              borderColor="var(--success)"
+              borderRadius="6px"
+              p={3}
+              display="flex"
+              alignItems="center"
+              gap={2}
+            >
+              <Box
+                w="8px"
+                h="8px"
+                bg="var(--success)"
+                borderRadius="50%"
+                css={{
+                  animation: "subtlePulse 2s ease-in-out infinite",
+                }}
+              />
+              <Text
+                fontSize="xs"
+                color="var(--success)"
+                fontWeight="500"
+                letterSpacing="0.01em"
+              >
+                PNG Ready for Download
+              </Text>
+            </Box>
+          )}
 
           {/* Size Controls */}
           <Box>
@@ -175,7 +209,7 @@ export default function HTMLInputSection({
               isLoading={isConverting}
               loadingText="Converting..."
               w="100%"
-              h="48px"
+              h={{ base: "44px", md: "48px" }}
               borderRadius="8px"
               fontWeight="500"
               fontSize="sm"
@@ -199,7 +233,7 @@ export default function HTMLInputSection({
               isLoading={isConverting}
               loadingText="Downloading..."
               w="100%"
-              h="48px"
+              h={{ base: "44px", md: "48px" }}
               border="1px solid"
               borderColor="var(--accent)"
               borderRadius="8px"

@@ -347,18 +347,28 @@ export default function Home() {
       <Box
         minH="100vh"
         bg="var(--background)"
-        py={12}
+        py={{ base: 8, md: 12 }}
         position="relative"
         overflow="hidden"
+        maxW="100vw"
       >
         <BackgroundEffects />
 
-        <Container maxW="1400px" px={6} position="relative" zIndex={1}>
-          <VStack spacing={16} align="stretch">
+        <Container
+          maxW="1400px"
+          px={{ base: 4, md: 6 }}
+          position="relative"
+          zIndex={1}
+        >
+          <VStack spacing={{ base: 8, md: 16 }} align="stretch">
             <Header />
 
             {/* Main Content */}
-            <HStack spacing={8} align="start">
+            <Box
+              display={{ base: "block", lg: "flex" }}
+              gap={{ base: 0, lg: 8 }}
+              flexDirection={{ base: "column", lg: "row" }}
+            >
               <HTMLInputSection
                 htmlContent={htmlContent}
                 setHtmlContent={setHtmlContent}
@@ -366,6 +376,7 @@ export default function Home() {
                 handleDownloadPng={handleDownloadPng}
                 isConverting={isConverting}
                 error={error}
+                convertedImageUrl={convertedImageUrl}
               />
 
               <HTMLOutputSection
@@ -374,7 +385,7 @@ export default function Home() {
                 convertedImageUrl={convertedImageUrl}
                 onImageOpen={onImageOpen}
               />
-            </HStack>
+            </Box>
           </VStack>
         </Container>
 

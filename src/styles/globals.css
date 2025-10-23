@@ -74,6 +74,15 @@ a {
   }
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -128,6 +137,62 @@ a {
   body {
     font-size: 14px;
   }
+
+  /* Mobile-specific adjustments */
+  .minimal-card {
+    margin-bottom: 1rem;
+  }
+
+  /* Improve touch targets */
+  button,
+  input,
+  textarea {
+    min-height: 44px;
+  }
+
+  /* Better spacing on mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Stack elements vertically on mobile */
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+
+  /* Adjust preview sizes for mobile */
+  .preview-container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Ensure no horizontal overflow */
+  .card-container {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Fix any fixed-width elements on mobile */
+  .mobile-responsive {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1400px;
+  }
 }
 
 /* Dark mode support */
@@ -143,5 +208,30 @@ a {
     --text-muted: #888888;
     --accent: #ff69b4;
     --accent-hover: #ff1493;
+  }
+}
+
+/* Mobile output section fixes */
+@media (max-width: 768px) {
+  .mobile-responsive {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .output-section {
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+  }
+
+  .preview-image {
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  /* Ensure containers don't overflow */
+  .preview-container {
+    max-width: 100% !important;
+    overflow: hidden !important;
   }
 }

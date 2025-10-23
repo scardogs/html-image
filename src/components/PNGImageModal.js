@@ -40,15 +40,15 @@ export default function PNGImageModal({ isOpen, onClose, convertedImageUrl }) {
           _hover={{ color: "var(--accent)" }}
         />
 
-        <ModalBody pb={8} textAlign="center">
+        <ModalBody pb={{ base: 4, md: 8 }} textAlign="center">
           <Box
             border="1px solid"
             borderColor="var(--border)"
             borderRadius="12px"
-            p={6}
+            p={{ base: 4, md: 6 }}
             bg="var(--surface)"
             boxShadow="0 4px 20px rgba(255, 20, 147, 0.08)"
-            maxH="80vh"
+            maxH={{ base: "70vh", md: "80vh" }}
             overflow="auto"
             css={{
               "&::-webkit-scrollbar": {

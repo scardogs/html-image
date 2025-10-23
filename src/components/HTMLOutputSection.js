@@ -20,7 +20,8 @@ export default function HTMLOutputSection({
   return (
     <Card
       flex="1"
-      minH="600px"
+      minH={{ base: "500px", md: "600px" }}
+      maxH={{ base: "70vh", md: "none" }}
       bg="var(--surface)"
       border="1px solid"
       borderColor="var(--border)"
@@ -28,9 +29,12 @@ export default function HTMLOutputSection({
       boxShadow="0 1px 3px rgba(0, 0, 0, 0.05)"
       _hover={{
         borderColor: "var(--accent)",
-        boxShadow: "0 4px 12px rgba(0, 102, 255, 0.08)",
+        boxShadow: "0 4px 12px rgba(255, 20, 147, 0.08)",
       }}
       transition="all 0.2s ease"
+      maxW="100%"
+      overflow="hidden"
+      className="mobile-responsive output-section"
     >
       <CardHeader pb={4}>
         <Text
@@ -45,7 +49,26 @@ export default function HTMLOutputSection({
         <Divider borderColor="var(--border-light)" />
       </CardHeader>
 
-      <CardBody>
+      <CardBody
+        overflow={{ base: "auto", md: "hidden" }}
+        maxH={{ base: "calc(70vh - 80px)", md: "none" }}
+        css={{
+          "&::-webkit-scrollbar": {
+            width: "6px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "var(--border-light)",
+            borderRadius: "3px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "var(--accent)",
+            borderRadius: "3px",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            background: "var(--accent-hover)",
+          },
+        }}
+      >
         <VStack spacing={8} align="stretch">
           {/* HTML Preview */}
           <Box>
@@ -68,10 +91,12 @@ export default function HTMLOutputSection({
               bg="var(--background)"
               overflow="hidden"
               boxShadow="0 2px 8px rgba(0, 0, 0, 0.05)"
-              width="400px"
-              height="400px"
+              width={{ base: "100%", md: "400px" }}
+              height={{ base: "250px", md: "400px" }}
               margin="0 auto"
               position="relative"
+              maxW="100%"
+              className="preview-container"
             >
               <Box
                 as="iframe"
@@ -142,13 +167,15 @@ export default function HTMLOutputSection({
                   bg="var(--background)"
                   boxShadow="0 2px 8px rgba(0, 0, 0, 0.05)"
                   overflow="hidden"
-                  width="400px"
-                  height="400px"
+                  width={{ base: "100%", md: "400px" }}
+                  height={{ base: "250px", md: "400px" }}
                   position="relative"
                   margin="0 auto"
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
+                  maxW="100%"
+                  className="preview-container"
                 >
                   <Image
                     src={convertedImageUrl}
@@ -161,6 +188,7 @@ export default function HTMLOutputSection({
                     width="100%"
                     height="100%"
                     objectFit="contain"
+                    className="preview-image"
                   />
                 </Box>
 
@@ -179,15 +207,16 @@ export default function HTMLOutputSection({
                 border="1px dashed"
                 borderColor="var(--border-light)"
                 borderRadius="8px"
-                p={20}
+                p={{ base: 8, md: 20 }}
                 textAlign="center"
                 bg="var(--surface)"
-                width="400px"
-                height="400px"
+                width={{ base: "100%", md: "400px" }}
+                height={{ base: "250px", md: "400px" }}
                 margin="0 auto"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
+                maxWidth="100%"
               >
                 <Box>
                   <Text

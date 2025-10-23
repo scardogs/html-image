@@ -13,6 +13,16 @@ export default function Header() {
       >
         HTML to PNG Converter
       </Heading>
+      <Heading
+        size="xl"
+        color="var(--text-primary)"
+        fontWeight="300"
+        mb={4}
+        letterSpacing="-0.02em"
+        className="clean-text"
+      >
+        VIP - SCALE
+      </Heading>
 
       <Divider
         borderColor="var(--border)"

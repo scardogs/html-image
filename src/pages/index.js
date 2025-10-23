@@ -87,6 +87,7 @@ export default function Home() {
                 margin: 0;
                 padding: 0;
                 font-family: Arial, sans-serif;
+                background: transparent;
               }
               
               /* Ensure Font Awesome icons are properly loaded */
@@ -207,7 +208,7 @@ export default function Home() {
     onClose: onImageClose,
   } = useDisclosure();
 
-  const handleConvertToPng = async () => {
+  const handleConvertToPng = async (customSize = null) => {
     setIsConverting(true);
     setError("");
     setConvertedImageUrl("");
@@ -220,7 +221,8 @@ export default function Home() {
       const dataUrl = await convertHTMLToPNG(
         htmlContent,
         previewRef,
-        iframeRef
+        iframeRef,
+        customSize
       );
       setConvertedImageUrl(dataUrl);
 

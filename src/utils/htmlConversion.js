@@ -1,7 +1,12 @@
 import * as htmlToImage from "html-to-image";
 import { createFontAwesomeSVG } from "../components/FontAwesomeIcons";
 
-export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
+export const convertHTMLToPNG = async (
+  htmlContent,
+  previewRef,
+  iframeRef,
+  customSize = null
+) => {
   // Try using the iframe content first (this should work better)
   if (previewRef.current && iframeRef.current) {
     try {
@@ -69,6 +74,66 @@ export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
 
         // Force reflow
         iframeDoc.body.offsetHeight;
+
+        // Calculate dynamic dimensions
+        let targetWidth, targetHeight;
+
+        if (customSize) {
+          // Use custom size if provided
+          targetWidth = customSize.width;
+          targetHeight = customSize.height;
+        } else {
+          // Calculate dimensions based on content
+          const contentWidth =
+            iframeDoc.body.scrollWidth || iframeDoc.body.offsetWidth;
+          const contentHeight =
+            iframeDoc.body.scrollHeight || iframeDoc.body.offsetHeight;
+
+          // Default to 1080x1080 if content is too small
+          const minSize = 400;
+          const maxSize = 2048;
+
+          targetWidth = Math.max(
+            minSize,
+            Math.min(maxSize, contentWidth || 1080)
+          );
+          targetHeight = Math.max(
+            minSize,
+            Math.min(maxSize, contentHeight || 1080)
+          );
+
+          console.log("Dynamic sizing:", {
+            contentWidth,
+            contentHeight,
+            targetWidth,
+            targetHeight,
+          });
+        }
+
+        // Ensure body has no padding/margin for clean capture
+        iframeDoc.body.style.margin = "0";
+        iframeDoc.body.style.padding = "0";
+        iframeDoc.body.style.backgroundColor = "transparent";
+
+        // Remove any wrapper divs that might add unwanted space
+        const bodyChildren = Array.from(iframeDoc.body.children);
+        if (bodyChildren.length === 1 && bodyChildren[0].tagName === "DIV") {
+          const wrapperDiv = bodyChildren[0];
+          // Check if this div is just a wrapper (no specific styling)
+          const computedStyle =
+            iframeDoc.defaultView.getComputedStyle(wrapperDiv);
+          if (
+            computedStyle.margin === "0px" &&
+            computedStyle.padding === "0px" &&
+            computedStyle.border === "0px none rgb(0, 0, 0)"
+          ) {
+            // Move all children of the wrapper to body and remove wrapper
+            while (wrapperDiv.firstChild) {
+              iframeDoc.body.insertBefore(wrapperDiv.firstChild, wrapperDiv);
+            }
+            iframeDoc.body.removeChild(wrapperDiv);
+          }
+        }
 
         // Debug: Test if we can see Font Awesome icons in the iframe
         const testIcon = iframeDoc.querySelector(
@@ -153,11 +218,13 @@ export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
             quality: 1.0,
             pixelRatio: 2,
             backgroundColor: null,
-            width: iframeDoc.body.scrollWidth || 400,
-            height: iframeDoc.body.scrollHeight || 300,
+            width: targetWidth,
+            height: targetHeight,
             style: {
               transform: "scale(1)",
               transformOrigin: "top left",
+              margin: "0",
+              padding: "0",
             },
             filter: (node) => {
               return node.tagName !== "SCRIPT";
@@ -169,6 +236,9 @@ export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
             // Force font loading
             cacheBust: true,
             skipFonts: false,
+            // Ensure clean capture
+            removeContainer: true,
+            skipAutoScale: true,
           });
         } catch (firstError) {
           console.log(
@@ -227,10 +297,16 @@ export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
               quality: 1.0,
               pixelRatio: 2,
               backgroundColor: null,
-              width: iframeDoc.body.scrollWidth || 400,
-              height: iframeDoc.body.scrollHeight || 300,
+              width: targetWidth,
+              height: targetHeight,
+              style: {
+                margin: "0",
+                padding: "0",
+              },
               useCORS: true,
               allowTaint: true,
+              removeContainer: true,
+              skipAutoScale: true,
             });
           } catch (svgError) {
             console.log(
@@ -243,10 +319,16 @@ export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
               quality: 1.0,
               pixelRatio: 2,
               backgroundColor: null,
-              width: iframeDoc.body.scrollWidth || 400,
-              height: iframeDoc.body.scrollHeight || 300,
+              width: targetWidth,
+              height: targetHeight,
+              style: {
+                margin: "0",
+                padding: "0",
+              },
               useCORS: true,
               allowTaint: true,
+              removeContainer: true,
+              skipAutoScale: true,
             });
           }
         }
@@ -277,9 +359,30 @@ export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
   tempDiv.style.zIndex = "9999";
   tempDiv.style.fontFamily = "Arial, sans-serif";
   tempDiv.style.border = "none"; // Remove border to avoid interference
+  tempDiv.style.margin = "0";
+  tempDiv.style.padding = "0";
 
   // Set HTML content
   tempDiv.innerHTML = htmlContent;
+
+  // Clean up any wrapper divs in the temporary element
+  const tempChildren = Array.from(tempDiv.children);
+  if (tempChildren.length === 1 && tempChildren[0].tagName === "DIV") {
+    const wrapperDiv = tempChildren[0];
+    // Check if this div is just a wrapper (no specific styling)
+    const computedStyle = window.getComputedStyle(wrapperDiv);
+    if (
+      computedStyle.margin === "0px" &&
+      computedStyle.padding === "0px" &&
+      computedStyle.border === "0px none rgb(0, 0, 0)"
+    ) {
+      // Move all children of the wrapper to tempDiv and remove wrapper
+      while (wrapperDiv.firstChild) {
+        tempDiv.insertBefore(wrapperDiv.firstChild, wrapperDiv);
+      }
+      tempDiv.removeChild(wrapperDiv);
+    }
+  }
 
   // Add to body temporarily
   document.body.appendChild(tempDiv);
@@ -292,6 +395,32 @@ export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
   tempDiv.scrollWidth;
   tempDiv.scrollHeight;
 
+  // Calculate dimensions
+  let width, height;
+
+  if (customSize) {
+    width = customSize.width;
+    height = customSize.height;
+  } else {
+    const contentWidth = Math.max(
+      tempDiv.scrollWidth,
+      tempDiv.offsetWidth,
+      400
+    );
+    const contentHeight = Math.max(
+      tempDiv.scrollHeight,
+      tempDiv.offsetHeight,
+      300
+    );
+
+    // Default to 1080x1080 if content is too small
+    const minSize = 400;
+    const maxSize = 2048;
+
+    width = Math.max(minSize, Math.min(maxSize, contentWidth || 1080));
+    height = Math.max(minSize, Math.min(maxSize, contentHeight || 1080));
+  }
+
   // Debug: Log dimensions
   console.log("Element dimensions:", {
     scrollWidth: tempDiv.scrollWidth,
@@ -300,13 +429,9 @@ export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
     offsetHeight: tempDiv.offsetHeight,
     clientWidth: tempDiv.clientWidth,
     clientHeight: tempDiv.clientHeight,
+    finalWidth: width,
+    finalHeight: height,
   });
-
-  // Calculate dimensions
-  const width = Math.max(tempDiv.scrollWidth, tempDiv.offsetWidth, 400);
-  const height = Math.max(tempDiv.scrollHeight, tempDiv.offsetHeight, 300);
-
-  console.log("Final dimensions:", { width, height });
 
   // Use html-to-image for client-side conversion with better options
   const dataUrl = await htmlToImage.toPng(tempDiv, {
@@ -318,6 +443,8 @@ export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
     style: {
       transform: "scale(1)",
       transformOrigin: "top left",
+      margin: "0",
+      padding: "0",
     },
     filter: (node) => {
       // Include all elements except script tags
@@ -325,6 +452,8 @@ export const convertHTMLToPNG = async (htmlContent, previewRef, iframeRef) => {
     },
     useCORS: true,
     allowTaint: true,
+    removeContainer: true,
+    skipAutoScale: true,
   });
 
   // Clean up

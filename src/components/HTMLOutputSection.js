@@ -85,6 +85,12 @@ export default function HTMLOutputSection({
                 top="0"
                 left="0"
                 bg="white"
+                style={{
+                  minWidth: "1080px",
+                  minHeight: "1080px",
+                  maxWidth: "2048px",
+                  maxHeight: "2048px",
+                }}
               />
             </Box>
           </Box>

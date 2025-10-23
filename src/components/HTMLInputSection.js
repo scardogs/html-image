@@ -12,7 +12,13 @@ import {
   AlertDescription,
   Box,
   Divider,
+  HStack,
+  Input,
+  Switch,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
+import { useState } from "react";
 
 export default function HTMLInputSection({
   htmlContent,
@@ -22,6 +28,16 @@ export default function HTMLInputSection({
   isConverting,
   error,
 }) {
+  const [useCustomSize, setUseCustomSize] = useState(false);
+  const [customWidth, setCustomWidth] = useState(1080);
+  const [customHeight, setCustomHeight] = useState(1080);
+
+  const handleConvertWithSize = () => {
+    const customSize = useCustomSize
+      ? { width: customWidth, height: customHeight }
+      : null;
+    handleConvertToPng(customSize);
+  };
   return (
     <Card
       flex="1"
@@ -84,11 +100,78 @@ export default function HTMLInputSection({
             resize="vertical"
           />
 
+          {/* Size Controls */}
+          <Box>
+            <FormControl display="flex" alignItems="center" mb={3}>
+              <FormLabel
+                htmlFor="custom-size"
+                mb="0"
+                fontSize="sm"
+                color="var(--text-secondary)"
+              >
+                Custom Size
+              </FormLabel>
+              <Switch
+                id="custom-size"
+                isChecked={useCustomSize}
+                onChange={(e) => setUseCustomSize(e.target.checked)}
+                colorScheme="pink"
+              />
+            </FormControl>
+
+            {useCustomSize && (
+              <HStack spacing={3} mb={4}>
+                <Box flex="1">
+                  <Text fontSize="xs" color="var(--text-muted)" mb={1}>
+                    Width (px)
+                  </Text>
+                  <Input
+                    value={customWidth}
+                    onChange={(e) =>
+                      setCustomWidth(parseInt(e.target.value) || 1080)
+                    }
+                    size="sm"
+                    borderRadius="6px"
+                    borderColor="var(--border)"
+                    _focus={{
+                      borderColor: "var(--accent)",
+                      boxShadow: "0 0 0 1px rgba(255, 20, 147, 0.1)",
+                    }}
+                    min={400}
+                    max={2048}
+                    type="number"
+                  />
+                </Box>
+                <Box flex="1">
+                  <Text fontSize="xs" color="var(--text-muted)" mb={1}>
+                    Height (px)
+                  </Text>
+                  <Input
+                    value={customHeight}
+                    onChange={(e) =>
+                      setCustomHeight(parseInt(e.target.value) || 1080)
+                    }
+                    size="sm"
+                    borderRadius="6px"
+                    borderColor="var(--border)"
+                    _focus={{
+                      borderColor: "var(--accent)",
+                      boxShadow: "0 0 0 1px rgba(255, 20, 147, 0.1)",
+                    }}
+                    min={400}
+                    max={2048}
+                    type="number"
+                  />
+                </Box>
+              </HStack>
+            )}
+          </Box>
+
           <VStack spacing={3}>
             <Button
               bg="var(--accent)"
               color="white"
-              onClick={handleConvertToPng}
+              onClick={handleConvertWithSize}
               isLoading={isConverting}
               loadingText="Converting..."
               w="100%"

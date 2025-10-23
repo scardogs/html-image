@@ -8,51 +8,62 @@ import {
   Heading,
   Box,
   Image,
+  Text,
 } from "@chakra-ui/react";
 
 export default function PNGImageModal({ isOpen, onClose, convertedImageUrl }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">
-      <ModalOverlay bg="rgba(0, 0, 0, 0.9)" />
-      <ModalContent bg="rgba(0, 0, 0, 0.95)" backdropFilter="blur(20px)">
-        <ModalHeader>
+      <ModalOverlay bg="rgba(0, 0, 0, 0.8)" />
+      <ModalContent bg="var(--background)" backdropFilter="blur(20px)">
+        <ModalHeader borderBottom="1px solid" borderColor="var(--border-light)">
           <Heading
             size="lg"
-            bg="linear-gradient(45deg, #8338ec, #3a86ff)"
-            bgClip="text"
-            textShadow="0 0 20px rgba(131, 56, 236, 0.5)"
+            color="var(--text-primary)"
+            fontWeight="300"
+            letterSpacing="-0.01em"
           >
-            🔍 Fullscreen PNG View
+            PNG Preview
           </Heading>
+          <Text
+            fontSize="sm"
+            color="var(--text-secondary)"
+            fontWeight="300"
+            mt={1}
+          >
+            Fullscreen view of your converted image
+          </Text>
         </ModalHeader>
 
-        <ModalCloseButton color="white" />
+        <ModalCloseButton
+          color="var(--text-secondary)"
+          _hover={{ color: "var(--accent)" }}
+        />
 
-        <ModalBody pb={6} textAlign="center">
+        <ModalBody pb={8} textAlign="center">
           <Box
-            border="2px solid"
-            borderColor="rgba(131, 56, 236, 0.5)"
-            borderRadius="15px"
-            p={4}
-            bg="rgba(0, 0, 0, 0.3)"
-            backdropFilter="blur(10px)"
-            boxShadow="0 0 30px rgba(131, 56, 236, 0.3)"
+            border="1px solid"
+            borderColor="var(--border)"
+            borderRadius="12px"
+            p={6}
+            bg="var(--surface)"
+            boxShadow="0 4px 20px rgba(255, 20, 147, 0.08)"
             maxH="80vh"
             overflow="auto"
             css={{
               "&::-webkit-scrollbar": {
-                width: "12px",
+                width: "8px",
               },
               "&::-webkit-scrollbar-track": {
-                background: "rgba(255, 255, 255, 0.1)",
-                borderRadius: "6px",
+                background: "var(--border-light)",
+                borderRadius: "4px",
               },
               "&::-webkit-scrollbar-thumb": {
-                background: "rgba(131, 56, 236, 0.5)",
-                borderRadius: "6px",
+                background: "var(--accent)",
+                borderRadius: "4px",
               },
               "&::-webkit-scrollbar-thumb:hover": {
-                background: "rgba(131, 56, 236, 0.7)",
+                background: "var(--accent-hover)",
               },
             }}
           >
@@ -61,7 +72,8 @@ export default function PNGImageModal({ isOpen, onClose, convertedImageUrl }) {
               alt="Converted PNG - Fullscreen"
               maxW="100%"
               maxH="100%"
-              borderRadius="10px"
+              borderRadius="8px"
+              boxShadow="0 2px 12px rgba(0, 0, 0, 0.1)"
             />
           </Box>
         </ModalBody>

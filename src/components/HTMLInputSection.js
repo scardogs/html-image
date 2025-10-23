@@ -26,30 +26,28 @@ export default function HTMLInputSection({
     <Card
       flex="1"
       minH="600px"
-      bg="rgba(10, 10, 10, 0.8)"
-      backdropFilter="blur(10px)"
+      bg="var(--surface)"
       border="1px solid"
-      borderColor="rgba(0, 255, 255, 0.2)"
-      borderRadius="2px"
-      boxShadow="0 0 20px rgba(0, 255, 255, 0.1)"
+      borderColor="var(--border)"
+      borderRadius="12px"
+      boxShadow="0 1px 3px rgba(0, 0, 0, 0.05)"
       _hover={{
-        borderColor: "rgba(0, 255, 255, 0.4)",
-        boxShadow: "0 0 30px rgba(0, 255, 255, 0.2)",
+        borderColor: "var(--accent)",
+        boxShadow: "0 4px 12px rgba(0, 102, 255, 0.08)",
       }}
-      transition="all 0.3s ease"
+      transition="all 0.2s ease"
     >
-      <CardHeader pb={2}>
+      <CardHeader pb={4}>
         <Text
-          fontSize="xs"
-          color="#00ffff"
-          fontWeight="300"
-          letterSpacing="widest"
-          textTransform="uppercase"
-          mb={1}
+          fontSize="sm"
+          color="var(--text-primary)"
+          fontWeight="500"
+          letterSpacing="0.01em"
+          mb={2}
         >
-          Input
+          HTML Input
         </Text>
-        <Divider borderColor="rgba(0, 255, 255, 0.2)" />
+        <Divider borderColor="var(--border-light)" />
       </CardHeader>
 
       <CardBody>
@@ -70,17 +68,17 @@ export default function HTMLInputSection({
   </div>
 </div>`}
             minH="400px"
-            fontFamily="'Courier New', monospace"
+            fontFamily="'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace"
             fontSize="sm"
-            bg="rgba(0, 0, 0, 0.5)"
+            bg="var(--background)"
             border="1px solid"
-            borderColor="rgba(0, 255, 255, 0.2)"
-            borderRadius="0"
-            color="#00ffff"
-            _placeholder={{ color: "rgba(0, 255, 255, 0.3)" }}
+            borderColor="var(--border)"
+            borderRadius="8px"
+            color="var(--text-primary)"
+            _placeholder={{ color: "var(--text-muted)" }}
             _focus={{
-              borderColor: "rgba(0, 255, 255, 0.5)",
-              boxShadow: "0 0 15px rgba(0, 255, 255, 0.2)",
+              borderColor: "var(--accent)",
+              boxShadow: "0 0 0 3px rgba(255, 20, 147, 0.1)",
               outline: "none",
             }}
             resize="vertical"
@@ -88,57 +86,52 @@ export default function HTMLInputSection({
 
           <VStack spacing={3}>
             <Button
-              bg="transparent"
-              color="#00ffff"
+              bg="var(--accent)"
+              color="white"
               onClick={handleConvertToPng}
               isLoading={isConverting}
-              loadingText="Processing..."
+              loadingText="Converting..."
               w="100%"
-              h="45px"
-              border="1px solid"
-              borderColor="rgba(0, 255, 255, 0.5)"
-              borderRadius="0"
-              fontWeight="300"
+              h="48px"
+              borderRadius="8px"
+              fontWeight="500"
               fontSize="sm"
-              letterSpacing="wider"
-              textTransform="uppercase"
-              boxShadow="0 0 15px rgba(0, 255, 255, 0.2)"
               _hover={{
-                bg: "rgba(0, 255, 255, 0.1)",
-                boxShadow: "0 0 25px rgba(0, 255, 255, 0.4)",
+                bg: "var(--accent-hover)",
+                transform: "translateY(-1px)",
+                boxShadow: "0 4px 12px rgba(255, 20, 147, 0.3)",
               }}
               _active={{
-                bg: "rgba(0, 255, 255, 0.2)",
+                transform: "translateY(0)",
               }}
-              transition="all 0.3s ease"
+              transition="all 0.2s ease"
             >
               Convert to PNG
             </Button>
 
             <Button
               bg="transparent"
-              color="#00ff88"
+              color="var(--accent)"
               onClick={handleDownloadPng}
               isLoading={isConverting}
               loadingText="Downloading..."
               w="100%"
-              h="45px"
+              h="48px"
               border="1px solid"
-              borderColor="rgba(0, 255, 136, 0.5)"
-              borderRadius="0"
-              fontWeight="300"
+              borderColor="var(--accent)"
+              borderRadius="8px"
+              fontWeight="500"
               fontSize="sm"
-              letterSpacing="wider"
-              textTransform="uppercase"
-              boxShadow="0 0 15px rgba(0, 255, 136, 0.2)"
               _hover={{
-                bg: "rgba(0, 255, 136, 0.1)",
-                boxShadow: "0 0 25px rgba(0, 255, 136, 0.4)",
+                bg: "var(--accent)",
+                color: "white",
+                transform: "translateY(-1px)",
+                boxShadow: "0 4px 12px rgba(255, 20, 147, 0.2)",
               }}
               _active={{
-                bg: "rgba(0, 255, 136, 0.2)",
+                transform: "translateY(0)",
               }}
-              transition="all 0.3s ease"
+              transition="all 0.2s ease"
             >
               Download PNG
             </Button>
@@ -147,25 +140,17 @@ export default function HTMLInputSection({
           {error && (
             <Alert
               status="error"
-              bg="rgba(0, 0, 0, 0.6)"
+              bg="rgba(255, 51, 51, 0.05)"
               border="1px solid"
-              borderColor="rgba(255, 0, 0, 0.5)"
-              borderRadius="0"
-              backdropFilter="blur(10px)"
+              borderColor="rgba(255, 51, 51, 0.2)"
+              borderRadius="8px"
             >
-              <AlertIcon color="#ff0000" />
+              <AlertIcon color="var(--error)" />
               <Box>
-                <AlertTitle
-                  color="#ff0000"
-                  fontSize="xs"
-                  letterSpacing="wider"
-                >
-                  ERROR
+                <AlertTitle color="var(--error)" fontSize="sm" fontWeight="500">
+                  Conversion Error
                 </AlertTitle>
-                <AlertDescription
-                  color="rgba(255, 0, 0, 0.7)"
-                  fontSize="xs"
-                >
+                <AlertDescription color="var(--text-secondary)" fontSize="sm">
                   {error}
                 </AlertDescription>
               </Box>

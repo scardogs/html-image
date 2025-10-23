@@ -21,55 +21,53 @@ export default function HTMLOutputSection({
     <Card
       flex="1"
       minH="600px"
-      bg="rgba(10, 10, 10, 0.8)"
-      backdropFilter="blur(10px)"
+      bg="var(--surface)"
       border="1px solid"
-      borderColor="rgba(255, 0, 255, 0.2)"
-      borderRadius="2px"
-      boxShadow="0 0 20px rgba(255, 0, 255, 0.1)"
+      borderColor="var(--border)"
+      borderRadius="12px"
+      boxShadow="0 1px 3px rgba(0, 0, 0, 0.05)"
       _hover={{
-        borderColor: "rgba(255, 0, 255, 0.4)",
-        boxShadow: "0 0 30px rgba(255, 0, 255, 0.2)",
+        borderColor: "var(--accent)",
+        boxShadow: "0 4px 12px rgba(0, 102, 255, 0.08)",
       }}
-      transition="all 0.3s ease"
+      transition="all 0.2s ease"
     >
-      <CardHeader pb={2}>
+      <CardHeader pb={4}>
         <Text
-          fontSize="xs"
-          color="#ff00ff"
-          fontWeight="300"
-          letterSpacing="widest"
-          textTransform="uppercase"
-          mb={1}
+          fontSize="sm"
+          color="var(--text-primary)"
+          fontWeight="500"
+          letterSpacing="0.01em"
+          mb={2}
         >
-          Output
+          Output Preview
         </Text>
-        <Divider borderColor="rgba(255, 0, 255, 0.2)" />
+        <Divider borderColor="var(--border-light)" />
       </CardHeader>
 
       <CardBody>
-        <VStack spacing={6} align="stretch">
+        <VStack spacing={8} align="stretch">
           {/* HTML Preview */}
           <Box>
-            <HStack justify="space-between" mb={2}>
+            <HStack justify="space-between" mb={4}>
               <Text
-                fontSize="xs"
-                color="rgba(255, 255, 255, 0.6)"
-                letterSpacing="wider"
-                textTransform="uppercase"
+                fontSize="sm"
+                color="var(--text-secondary)"
+                fontWeight="500"
+                letterSpacing="0.01em"
               >
-                Preview
+                Live Preview
               </Text>
             </HStack>
 
             <Box
               ref={previewRef}
               border="1px solid"
-              borderColor="rgba(0, 255, 255, 0.2)"
-              borderRadius="0"
-              bg="rgba(255, 255, 255, 0.98)"
+              borderColor="var(--border)"
+              borderRadius="8px"
+              bg="var(--background)"
               overflow="hidden"
-              boxShadow="0 0 15px rgba(0, 255, 255, 0.1)"
+              boxShadow="0 2px 8px rgba(0, 0, 0, 0.05)"
               width="400px"
               height="400px"
               margin="0 auto"
@@ -91,35 +89,38 @@ export default function HTMLOutputSection({
             </Box>
           </Box>
 
-          <Divider borderColor="rgba(255, 0, 255, 0.1)" />
+          <Divider borderColor="var(--border-light)" />
 
           {/* PNG Output */}
           <Box>
-            <HStack justify="space-between" mb={2}>
+            <HStack justify="space-between" mb={4}>
               <Text
-                fontSize="xs"
-                color="rgba(255, 255, 255, 0.6)"
-                letterSpacing="wider"
-                textTransform="uppercase"
+                fontSize="sm"
+                color="var(--text-secondary)"
+                fontWeight="500"
+                letterSpacing="0.01em"
               >
-                Result
+                Generated Image
               </Text>
 
               {convertedImageUrl && (
                 <Button
-                  size="xs"
+                  size="sm"
                   bg="transparent"
-                  color="rgba(255, 0, 255, 0.7)"
+                  color="var(--accent)"
                   onClick={onImageOpen}
                   border="1px solid"
-                  borderColor="rgba(255, 0, 255, 0.3)"
-                  borderRadius="0"
-                  fontSize="xs"
-                  px={3}
+                  borderColor="var(--accent)"
+                  borderRadius="6px"
+                  fontSize="sm"
+                  px={4}
                   _hover={{
-                    bg: "rgba(255, 0, 255, 0.1)",
-                    borderColor: "rgba(255, 0, 255, 0.5)",
+                    bg: "var(--accent)",
+                    color: "white",
+                    transform: "translateY(-1px)",
+                    boxShadow: "0 2px 8px rgba(255, 20, 147, 0.2)",
                   }}
+                  transition="all 0.2s ease"
                 >
                   Expand
                 </Button>
@@ -130,10 +131,10 @@ export default function HTMLOutputSection({
               <Box textAlign="center">
                 <Box
                   border="1px solid"
-                  borderColor="rgba(255, 0, 255, 0.2)"
-                  borderRadius="0"
-                  bg="rgba(0, 0, 0, 0.5)"
-                  boxShadow="0 0 15px rgba(255, 0, 255, 0.1)"
+                  borderColor="var(--border)"
+                  borderRadius="8px"
+                  bg="var(--background)"
+                  boxShadow="0 2px 8px rgba(0, 0, 0, 0.05)"
                   overflow="hidden"
                   width="400px"
                   height="400px"
@@ -145,8 +146,8 @@ export default function HTMLOutputSection({
                 >
                   <Image
                     src={convertedImageUrl}
-                    alt="Captured Preview"
-                    borderRadius="0"
+                    alt="Generated PNG Image"
+                    borderRadius="8px"
                     cursor="pointer"
                     onClick={onImageOpen}
                     _hover={{ opacity: 0.9 }}
@@ -158,23 +159,23 @@ export default function HTMLOutputSection({
                 </Box>
 
                 <Text
-                  mt={3}
-                  color="rgba(0, 255, 0, 0.7)"
-                  fontSize="xs"
-                  letterSpacing="wider"
-                  textTransform="uppercase"
+                  mt={4}
+                  color="var(--success)"
+                  fontSize="sm"
+                  fontWeight="500"
+                  letterSpacing="0.01em"
                 >
-                  ✓ Ready
+                  ✓ Ready for download
                 </Text>
               </Box>
             ) : (
               <Box
                 border="1px dashed"
-                borderColor="rgba(255, 255, 255, 0.1)"
-                borderRadius="0"
+                borderColor="var(--border-light)"
+                borderRadius="8px"
                 p={20}
                 textAlign="center"
-                bg="rgba(0, 0, 0, 0.3)"
+                bg="var(--surface)"
                 width="400px"
                 height="400px"
                 margin="0 auto"
@@ -184,11 +185,12 @@ export default function HTMLOutputSection({
               >
                 <Box>
                   <Text
-                    color="rgba(255, 255, 255, 0.3)"
-                    fontSize="xs"
-                    letterSpacing="wider"
+                    color="var(--text-muted)"
+                    fontSize="sm"
+                    fontWeight="400"
+                    letterSpacing="0.01em"
                   >
-                    AWAITING CONVERSION
+                    Awaiting conversion...
                   </Text>
                 </Box>
               </Box>

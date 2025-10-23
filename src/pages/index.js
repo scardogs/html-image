@@ -284,11 +284,11 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>- HTML to PNG Converter</title>
+        <title>HTML to PNG Converter</title>
 
         <meta
           name="description"
-          content="Convert HTML content to PNG images with futuristic neon design"
+          content="Convert HTML content to PNG images with clean, modern design"
         />
 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -319,62 +319,43 @@ export default function Home() {
       </Head>
 
       <style jsx global>{`
-        /* CSS isolation not needed with iframe */
+        /* Clean minimal animations */
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
-        @keyframes neon-pulse {
+        @keyframes subtlePulse {
           0%,
           100% {
             opacity: 1;
-
-            filter: brightness(1);
           }
-
           50% {
             opacity: 0.8;
-
-            filter: brightness(1.2);
-          }
-        }
-
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-
-          50% {
-            transform: translateY(-20px);
-          }
-        }
-
-        @keyframes glow {
-          0%,
-          100% {
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-          }
-
-          50% {
-            box-shadow: 0 0 40px rgba(0, 255, 255, 0.8),
-              0 0 60px rgba(255, 0, 255, 0.5);
           }
         }
       `}</style>
 
       <Box
         minH="100vh"
-        bg="#0a0a0a"
-        py={8}
+        bg="var(--background)"
+        py={12}
         position="relative"
         overflow="hidden"
       >
         <BackgroundEffects />
 
-        <Container maxW="1400px" px={4} position="relative" zIndex={1}>
-          <VStack spacing={12} align="stretch">
+        <Container maxW="1400px" px={6} position="relative" zIndex={1}>
+          <VStack spacing={16} align="stretch">
             <Header />
 
             {/* Main Content */}
-
             <HStack spacing={8} align="start">
               <HTMLInputSection
                 htmlContent={htmlContent}

@@ -1,29 +1,38 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text, Divider } from "@chakra-ui/react";
 
 export default function Header() {
   return (
-    <Box textAlign="center" py={6}>
+    <Box textAlign="center" py={8}>
       <Heading
-        size="2xl"
-        color="#00ffff"
-        fontWeight="200"
-        mb={2}
-        letterSpacing="widest"
-        textTransform="uppercase"
-        textShadow="0 0 20px rgba(0, 255, 255, 0.8), 0 0 40px rgba(0, 255, 255, 0.4)"
-        animation="neon-pulse 3s ease-in-out infinite"
+        size="xl"
+        color="var(--text-primary)"
+        fontWeight="300"
+        mb={4}
+        letterSpacing="-0.02em"
+        className="clean-text"
       >
-        HTML → PNG
+        HTML to PNG Converter
       </Heading>
 
+      <Divider
+        borderColor="var(--border)"
+        w="60px"
+        mx="auto"
+        mb={6}
+        borderWidth="1px"
+      />
+
       <Text
-        fontSize="sm"
-        color="rgba(255, 255, 255, 0.5)"
+        fontSize="md"
+        color="var(--text-secondary)"
         fontWeight="300"
-        letterSpacing="wider"
-        textTransform="uppercase"
+        letterSpacing="0.01em"
+        maxW="600px"
+        mx="auto"
+        lineHeight="1.6"
       >
-        VIP - SCALE
+        Transform your HTML content into high-quality PNG images with precision
+        and ease
       </Text>
     </Box>
   );
